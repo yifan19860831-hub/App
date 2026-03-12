@@ -125,6 +125,19 @@ function canPay(
     const hasExportError = report?.hasExportError ?? false;
     const didExportFail = !isExported && hasExportError;
 
+    // Handle invoice reports separately with stricter permission checks
+    const isInvoice = isInvoiceReport(report);
+
+    if (isInvoice) {
+        const parentReport = getParentReport(report);
+        if (parentReport?.invoiceReceiver?.type === CONST.REPORT.INVOICE_RECEIVER_TYPE.INDIVIDUAL && reimbursableSpend > 0) {
+            return parentReport?.invoiceReceiver?.accountID === currentUserAccountID;
+        }
+
+        // For business invoice receivers, only admins can pay
+        return invoiceReceiverPolicy?.role === CONST.POLICY.ROLE.ADMIN && reimbursableSpend > 0;
+    }
+
     if (isExpense && isReportPayer && isPaymentsEnabled && isReportFinished && reimbursableSpend !== 0) {
         return !didExportFail;
     }
@@ -139,18 +152,7 @@ function canPay(
         return true;
     }
 
-    const isInvoice = isInvoiceReport(report);
-
-    if (!isInvoice) {
-        return false;
-    }
-
-    const parentReport = getParentReport(report);
-    if (parentReport?.invoiceReceiver?.type === CONST.REPORT.INVOICE_RECEIVER_TYPE.INDIVIDUAL && reimbursableSpend > 0) {
-        return parentReport?.invoiceReceiver?.accountID === currentUserAccountID;
-    }
-
-    return invoiceReceiverPolicy?.role === CONST.POLICY.ROLE.ADMIN && reimbursableSpend > 0;
+    return false;
 }
 
 function canExport(report: Report, currentUserLogin: string, policy?: Policy) {
