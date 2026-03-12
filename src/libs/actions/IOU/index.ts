@@ -7383,7 +7383,7 @@ function createSplitsAndOnyxData({
                 tag,
                 taxCode,
                 taxAmount: isExpenseReport(oneOnOneIOUReport) ? -splitTaxAmount : splitTaxAmount,
-                billable,
+                billable: effectiveBillable,
                 source: CONST.IOU.TYPE.SPLIT,
             },
         });
