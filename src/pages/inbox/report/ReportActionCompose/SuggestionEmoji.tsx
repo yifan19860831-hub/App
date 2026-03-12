@@ -46,6 +46,7 @@ function SuggestionEmoji({
     resetKeyboardInput,
     measureParentContainerAndReportCursor,
     isComposerFocused,
+    onEscapePressed,
     ref,
 }: SuggestionEmojiProps) {
     const [preferredSkinTone = CONST.EMOJI_DEFAULT_SKIN_TONE] = useOnyx(ONYXKEYS.PREFERRED_EMOJI_SKIN_TONE);
@@ -134,12 +135,14 @@ function SuggestionEmoji({
 
                 if (suggestionsExist) {
                     resetSuggestions();
+                    // Refocus composer after closing suggestions with ESC
+                    onEscapePressed?.();
                 }
 
                 return true;
             }
         },
-        [highlightedEmojiIndex, insertSelectedEmoji, resetSuggestions, suggestionValues.suggestedEmojis.length],
+        [highlightedEmojiIndex, insertSelectedEmoji, resetSuggestions, suggestionValues.suggestedEmojis.length, onEscapePressed],
     );
 
     /**

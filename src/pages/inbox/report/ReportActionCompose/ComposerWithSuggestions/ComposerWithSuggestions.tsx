@@ -1058,6 +1058,7 @@ function ComposerWithSuggestions({
                 measureParentContainerAndReportCursor={measureParentContainerAndReportCursor}
                 isGroupPolicyReport={isGroupPolicyReport}
                 policyID={policyID}
+                onEscapePressed={() => focus()}
                 // Input
                 value={value}
                 selection={selection}

@@ -44,6 +44,9 @@ type SuggestionProps = {
     /** The policyID of the report connected to current composer */
     policyID?: string;
 
+    /** Callback to focus composer after closing suggestions with ESC */
+    onEscapePressed?: () => void;
+
     /** Reference to the outer element */
     ref?: ForwardedRef<SuggestionsRef>;
 };
@@ -64,6 +67,7 @@ function Suggestions({
     isComposerFocused,
     isGroupPolicyReport,
     policyID,
+    onEscapePressed,
     ref,
 }: SuggestionProps) {
     const suggestionEmojiRef = useRef<SuggestionsRef>(null);
@@ -158,6 +162,7 @@ function Suggestions({
         isComposerFocused,
         isGroupPolicyReport,
         policyID,
+        onEscapePressed,
     };
 
     return (

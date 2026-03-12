@@ -66,6 +66,7 @@ function SuggestionMention({
     isComposerFocused,
     isGroupPolicyReport,
     policyID,
+    onEscapePressed,
     ref,
 }: SuggestionProps) {
     const personalDetails = usePersonalDetails();
@@ -288,12 +289,14 @@ function SuggestionMention({
 
                 if (suggestionsExist) {
                     resetSuggestions();
+                    // Refocus composer after closing suggestions with ESC
+                    onEscapePressed?.();
                 }
 
                 return true;
             }
         },
-        [highlightedMentionIndex, insertSelectedMention, resetSuggestions, suggestionValues.suggestedMentions.length],
+        [highlightedMentionIndex, insertSelectedMention, resetSuggestions, suggestionValues.suggestedMentions.length, onEscapePressed],
     );
 
     const getUserMentionOptions = useCallback(
